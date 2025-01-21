@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Post - Chat Room{% endblock %}
+
+{% block content %}
+<div class=" flex flex-col items-center mt-10">
+<h2 class="text-4xl  font-bold mb-4">Create a New Post</h2>
+
+<form method="POST" enctype="multipart/form-data" class="space-y-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="bg-indigo-700 text-white px-4 py-2 hover:bg-indigo-500 rounded-lg">Post</button>
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+<!-- {% load static %} -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+    <title>{%block title%}📱 Chat Room{%endblock%}</title>
+</head>
+<body>
+  
+  <header class="bg-grey-600 shadow text-black">
+    <nav class="container mx-auto p-4 flex justify-between items-center">
+      
+      <div class="flex flex-col items-center lg:flex-row lg:space-x-4">
+        <!-- <img src="{% static 'images/logo.png' %}" alt="Logo" class="w-10 h-10 rounded-full"> -->
+        <h1 class="font-bold text-2xl">📱 Chat Room</h1>
+      </div>
+  
+      <input type="checkbox" id="menu-toggle" class="peer hidden">
+    <label for="menu-toggle" class="lg:hidden flex items-center cursor-pointer">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </label>
+
+
+      <div class="hidden peer-checked:flex lg:flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-6 ">
+        {% if user.is_authenticated %}
+        <p class="text-lg font-bold">Hello, {{ request.user.username }}!</p>
+        <a href="{% url 'home' %}" class="text-lg font-bold hover:underline mt-2 lg:mt-0">Home</a>
+        <a href="{% url 'profile' username=request.user.username %}" class="text-lg font-bold hover:underline">Profile</a>
+        <a href="{% url 'create_post' %}" class="text-lg font-bold hover:underline">Post</a>
+        
+          <!-- <a href="{% url 'logout' %}" class="hover:underline">Logout</a> -->
+          <form action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="hover:underline">Logout</button>
+        </form>
+        
+          
+        {% else %}
+          <a href="{% url 'home' %}" class="text-lg font-bold hover:underline mt-2 lg:mt-0">Home</a>
+          <a href="{% url 'login' %}" class="hover:underline">Login</a>
+          <a href="{% url 'register' %}" class="hover:underline">Register</a>
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+  
+    {% block content %}
+    {% endblock %}
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">
+        <p>&copy; 2025 Photo Collection. All rights reserved.</p>
+    </footer>
+</body>
+</html>

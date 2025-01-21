@@ -1,0 +1,60 @@
+{%extends 'base.html' %}
+{%load static%}
+{%block title%}Home {%endblock%}
+
+{%block content%}
+<div>
+<h1 class="text-5xl font-serif text-center m-10">Let's Chat</h1>
+<div class="mx-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% if posts %}
+    {% for post in posts %}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post Image"  class="w-full h-48 object-cover">
+        {% endif %}
+        <a href="{% url 'post_detail' post.id %}" class="text-lg font-semibold mx-6 my-2 hover:underline"> {{ post.content }}</a>
+        <p class="text-gray-900 mx-6 font-bold text-indigo-900">Posted by
+            {% if post.author == request.user %}
+               <span class="text-indigo-900">You</span>
+            {% else %}
+             <a href="{% url 'other_profile_view' post.author.username  %}" class="hover:underline">{{ post.author.username }}</a> 
+            {% endif %}
+            </p>
+        <p class="text-gray-500 mx-6">{{ post.created_at }}</p>
+        {% if user.is_authenticated %}
+        <div class="flex gap-4 my-4">
+            <form action="{% url 'like_post' post.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="px-4 py-2  text-black rounded-lg  transition" {% if user_liked %}disabled class="opacity-50 cursor-not-allowed"{% endif %}>
+                    💜   {{ post.likes.count }}
+                </button>
+            </form>
+            <form action="{% url 'dislike_post' post.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="px-4 py-2  text-black rounded-lg  transition" {% if user_disliked %}disabled class="opacity-50 cursor-not-allowed"{% endif %}>
+                    👎  {{ post.dislikes.count }}
+                </button>
+            </form>
+            
+            <form action="{% url 'post_detail' post.id %}" method="post" class="space-y-4 inline">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit" class="text-white rounded-lg  transition">
+                    <img src="{% static 'images/comment.png' %}" alt="Logo" class="w-5 h-5 ml-4 "> 
+                    Comment
+                </button>
+            </form>
+            </div>
+        {% else %}
+            <p class="text-gray-500">You must be logged in to comment.</p>
+        {% endif %}
+
+        </div>
+    {% empty %}
+    <p>No posts to show.</p>
+    {% endfor %}
+ {% endif %}
+</div>
+</div>
+{% endblock%}

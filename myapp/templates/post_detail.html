@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Post Details - Social Media{% endblock %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row gap-6 border border-gray-300 p-6 rounded-lg shadow-lg max-w-3xl mx-auto">
+    {% if post.image %}
+        <div class="flex-1">
+            <img src="{{ post.image.url }}" alt="Post Image" class="w-full h-72 object-cover rounded-lg">
+        </div>
+    {% endif %}
+    <div class="flex-2">
+        <h1 class="text-2xl font-bold mb-2">{{ post.content }}</h1>
+        <p class="text-sm text-gray-500">Posted by 
+            {% if post.author == request.user %}
+              <span class="text-indigo-900">You</span>
+            {% else %}
+              <a href="{% url 'other_profile_view' post.author.username  %}" class="hover:underline"> <strong class="text-indigo-800 text-1xl">{{ post.author.username }}</strong></a> 
+              {% endif %}
+              on <span>{{ post.created_at }}</span></p>
+        
+        <!-- <div class="my-4">
+            <h2 class="inline-block text-lg font-semibold mr-6">💜   {{ post.likes.count }}</h2>
+            <h2 class="inline-block text-lg font-semibold">👎  {{ post.dislikes.count }}</h2>
+        </div> -->
+        
+        {% if user.is_authenticated %}
+            <div class="flex gap-4 my-4">
+                <form action="{% url 'like_post' post.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="px-4 py-2  text-black rounded-lg  transition" {% if user_liked %}disabled class="opacity-50 cursor-not-allowed"{% endif %}>
+                        💜   {{ post.likes.count }}
+                    </button>
+                </form>
+                <form action="{% url 'dislike_post' post.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="px-4 py-2  text-black rounded-lg  transition" {% if user_disliked %}disabled class="opacity-50 cursor-not-allowed"{% endif %}>
+                        👎  {{ post.dislikes.count }}
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+        
+        <h3 class="text-xl font-semibold mb-2">Comments</h3>
+        <div class="space-y-4 mb-6">
+            {% for comment in comments %}
+                <div class="border-b border-gray-200 pb-2">
+                    <p class="text-gray-800"><strong>{{ comment.author.username }}:</strong> {{ comment.content }}</p>
+                    <p class="text-sm text-gray-500">{{ comment.created_at }}</p>
+                </div>
+            {% empty %}
+                <p class="text-gray-500">No comments yet.</p>
+            {% endfor %}
+        </div>
+        
+        {% if user.is_authenticated %}
+            <form action="" method="post" class="space-y-4">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                    Add Comment
+                </button>
+            </form>
+        {% else %}
+            <p class="text-gray-500">You must be logged in to comment.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

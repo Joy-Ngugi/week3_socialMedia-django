@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="m-14">
+<h2 class="text-4xl font-bold text-center">Edit Profile</h2>
+
+<form method="POST" enctype="multipart/form-data" class="mx-20 mt-6">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+    <button type="submit" class="bg-indigo-700 text-white px-4 py-2 hover:bg-indigo-500 rounded-lg mb-4">Save Changes</button>
+</form>
+<p><a href="{% url 'profile' username=request.user.username %}" class="text-indigo-600 hover:underline ml-20 font-medium "> ↩Back to Profile</a></p>
+</div>
+{% endblock %}

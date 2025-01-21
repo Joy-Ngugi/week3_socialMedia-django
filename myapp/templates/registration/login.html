@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+{%block title%}Login {%endblock%}
+{%block content%}
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
+<form method="post" class="space-y-8 mt-6">
+{%csrf_token %}
+<div class="flex flex-col">
+{{ form.as_p }}
+</div>
+
+<button type="submit" class="bg-indigo-700 py-2 px-4 text-white hover:bg-indigo-500 rounded-lg">Login</button>
+</form>
+</div>
+</div>
+
+{%endblock%}

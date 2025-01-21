@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{%load static%}
+{% block title %}Profile - {{ user.username }}{% endblock %}
+{% block content %}
+<div class="m-14">
+<h1 class="text-2xl font-bold mb-4 text-center">Your Profile</h1>
+
+<div class="bg-white p-4 rounded-lg shadow-lg mb-6 text-center flex flex-col items-center">
+    {% if user.profile.profile_picture %}
+    <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="w-44 h-44 rounded-full mb-4">
+    {% else %}
+    <img src="{% static 'images/icon.png' %}" alt="Default Profile Picture" class="w-44 h-44 rounded-full mb-4">
+    {% endif %}
+    <p class="text-1xl font-serif"><strong>Bio:</strong> {{ user.profile.bio }}</p>
+
+    <div class="flex space-x-8 my-4">
+        <div>
+            <h3 class="font-bold">Followers</h3>
+            <p>{{ followers.count }}</p>
+        </div>
+        <div>
+            <h3 class="font-bold">Following</h3>
+            <p>{{ following.count }}</p>
+        </div>
+    </div>
+    </div>
+
+    <a href="{% url 'profile_update' %}" class="bg-indigo-700 text-white font-bold p-2 mb-6 rounded hover:underline">Update Profile</a>
+
+    <h3 class="text-3xl text-center mb-4 mt-4 font-serif">Your Posts</h3>
+
+
+<div class="grid grid-cols-3 gap-6 ml-20 mb-6">
+    {% if posts %}
+        
+        {% for post in posts %}
+        <div class="transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:translate-y-2">
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <a href="{% url 'post_detail' post.id %}" class="text-2xl font-bold mb-2"> {{ post.content }}</a>
+                <p class="text-sm text-gray-500 mb-4">Posted on {{ post.created_at }}</p>
+                {% if post.image %}
+                   <img src="{{ post.image.url }}" alt="Post Image"  class="w-full h-48 object-cover rounded-md mb-4">
+                {% endif %}
+
+                <h3 class="text-lg font-semibold">Comments:</h3>
+            <ul class="mb-4">
+                {% for comment in post.comments.all %}
+                    <li class="text-sm text-gray-800">
+                        <strong>{{ comment.author.username }}:</strong> {{ comment.content }}
+                    </li>
+                {% empty %}
+                    <li class="text-sm text-gray-500">No comments yet.</li>
+                {% endfor %}
+            </ul>
+
+            
+                <form method="POST" action="{% url 'delete_post' post.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="font-bold text-red-500">Delete</button>
+                </form>
+            </div>
+        </div>
+            
+              
+        {% endfor %}
+    {% else %}
+        <p>No posts yet.</p>
+    
+    {% endif %}
+</div>
+
+<a href="{% url 'create_post' %}" class="bg-indigo-700 text-white font-bold p-2 mb-6 rounded hover:underline mt-10">Create a new post</a>
+{% endblock %}
+
