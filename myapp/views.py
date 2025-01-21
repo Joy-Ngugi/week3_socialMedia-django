@@ -11,7 +11,7 @@ from .forms import RegistrationForm, ProfileUpdateForm, UserUpdateForm, PostForm
 import cloudinary.uploader
 from django.db import IntegrityError
 
-@login_required
+
 
 def home(request):
     all_posts = Post.objects.all().order_by('-created_at')
