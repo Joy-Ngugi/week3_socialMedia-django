@@ -94,15 +94,29 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-if os.environ.get('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.parse(
-            "postgresql://test_blog_9wtd_user:AFQPO00LyhMWof0oi0q1YGmniGanQHDo@dpg-ctucoojtq21c73bhbd50-a.oregon-postgres.render.com/test_blog_9wtd"
-        )
+# if os.environ.get('DATABASE_URL'):
+#     DATABASES = {
+#         'default': dj_database_url.parse(
+#             "postgresql://test_blog_9wtd_user:AFQPO00LyhMWof0oi0q1YGmniGanQHDo@dpg-ctucoojtq21c73bhbd50-a.oregon-postgres.render.com/test_blog_9wtd"
+#         )
         
-    }
-else:
-    DATABASES = {
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'media_db',
+#             'USER': 'media_user',
+#             'PASSWORD': 'joyjoy',
+#             'HOST': 'localhost',
+#             'PORT': '5432',
+#             'OPTIONS': {
+#             'options': '-c search_path=public'
+#             }
+#         }
+#     }
+
+DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'media_db',
@@ -110,9 +124,11 @@ else:
             'PASSWORD': 'joyjoy',
             'HOST': 'localhost',
             'PORT': '5432',
+            'OPTIONS': {
+            'options': '-c search_path=public'
+            }
         }
     }
-
 
 
 
@@ -140,7 +156,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Africa/Nairobi'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
