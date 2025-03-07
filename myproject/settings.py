@@ -36,7 +36,7 @@ SECRET_KEY = 'django-insecure-q&%-8*0_2bcb4lz1+tzxm*5(k_ph9jy#6_@w%z67b%h1w=g$(u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['week3-socialmedia-django-1.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['week3-socialmedia-django-1.onrender.com','week3-socialmedia-django-2tc5.onrender.com/', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -116,21 +116,26 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 #         }
 #     }
 
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'media_db',
+#             'USER': 'media_user',
+#             'PASSWORD': 'joyjoy',
+#             'HOST': 'localhost',
+#             'PORT': '5432',
+#             'OPTIONS': {
+#             'options': '-c search_path=public'
+#             }
+#         }
+#     }
+
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'media_db',
-            'USER': 'media_user',
-            'PASSWORD': 'joyjoy',
-            'HOST': 'localhost',
-            'PORT': '5432',
-            'OPTIONS': {
-            'options': '-c search_path=public'
-            }
-        }
+        'default': dj_database_url.parse(
+            "postgresql://vacation_findet_user:QiRIo86lTQyYQsRP67Jx4q1Lanwgl9Zl@dpg-cul0imq3esus73b1olpg-a.oregon-postgres.render.com/vacation_findet"
+        )
+        
     }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
